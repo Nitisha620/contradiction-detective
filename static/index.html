@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contradiction Detective</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <header>
+            <h1>Contradiction Detective</h1>
+            <p>Discover whether two statements agree or contradict each other.</p>
+        </header>
+
+        <section class="input-section">
+
+            <div class="input-group">
+                <label for="statementA">Statement A</label>
+                <textarea
+                    id="statementA"
+                    placeholder="Enter your first statement..."
+                ></textarea>
+            </div>
+
+            <div class="input-group">
+                <label for="statementB">Statement B</label>
+                <textarea
+                    id="statementB"
+                    placeholder="Enter your second statement..."
+                ></textarea>
+            </div>
+
+            <button id="analyseButton">Analyse Statements</button>
+
+            <p id="status"></p>
+
+        </section>
+
+        <section id="resultSection" class="result-section hidden">
+
+            <h2>Analysis Result</h2>
+
+            <h3 id="classification"></h3>
+
+            <h4>Explanation</h4>
+            <p id="explanation"></p>
+
+            <h4>Evidence</h4>
+            <ul id="evidence"></ul>
+
+            <h4>Possible Explanations</h4>
+            <ul id="possibleExplanations"></ul>
+
+            <h4>Confidence</h4>
+            <p id="confidence"></p>
+
+        </section>
+
+    </main>
+
+    <script src="/static/script.js"></script>
+
+</body>
+</html>
