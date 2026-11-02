@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from google import genai
 from google.genai import types
 from pydantic import ValidationError
+import time
 
 from schemas import AnalysisRequest, AnalysisResponse
 
@@ -10,6 +11,8 @@ from fastapi.responses import FileResponse
 from pathlib import Path
 
 from config import settings
+
+from logger_config import logger
 
 
 api_key = settings.GEMINI_API_KEY
@@ -41,6 +44,10 @@ def home():
 
 @app.post("/analyse", response_model=AnalysisResponse)
 def analyse_statements(request: AnalysisRequest):
+
+    start_time = time.perf_counter()
+
+    logger.info("Analysis request received.")
 
     prompt = f"""
     You are a Contradiction Detective.
@@ -81,16 +88,32 @@ def analyse_statements(request: AnalysisRequest):
             )
         )
 
+        elapsed_time = time.perf_counter() - start_time
+
+        logger.info(
+            "Gemini response received in %.2f seconds",
+            elapsed_time
+        )
+
         return AnalysisResponse.model_validate_json(response.text)
 
     except ValidationError:
+        logger.error("Gemini returned an invalid response.")
+        
         raise HTTPException(
             status_code=502,
             detail="The AI returned an invalid response."
         )
 
     except Exception as error:
-        print(f"Gemini API error: {type(error).__name__}: {error}")
+
+        elapsed_time = time.perf_counter() - start_time
+
+        logger.error(
+            "Gemini API request failed: %s", 
+            elapsed_time,
+            type(error).__name__
+        )
 
         raise HTTPException(
             status_code=502,
