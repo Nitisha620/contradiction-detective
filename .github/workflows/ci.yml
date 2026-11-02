@@ -28,4 +28,6 @@ jobs:
         run: python -m compileall -q .
       
       - name: Check FastAPI Application
+        env: 
+          GEMINI_API_KEY: ci-test-key
         run: python -c "from main import app; print('Application initialized successfully')"
