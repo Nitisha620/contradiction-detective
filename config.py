@@ -9,7 +9,7 @@ class Settings:
     APP_ENV: str = os.getenv("APP_ENV", "development")
 
     REQUEST_TIMEOUT:int = int(
-        os.getenv("REQUEST_TIMEOUT", "20000")
+        os.getenv("REQUEST_TIMEOUT", "120000")
     )
 
 settings = Settings()
