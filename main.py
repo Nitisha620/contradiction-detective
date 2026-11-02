@@ -56,7 +56,7 @@ def home():
 
 
 @app.post("/analyse", response_model=AnalysisResponse)
-@limiter.limt("5/minute")
+@limiter.limit("5/minute")
 def analyse_statements(request: AnalysisRequest):
 
     start_time = time.perf_counter()
