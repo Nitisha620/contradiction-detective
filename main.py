@@ -89,7 +89,9 @@ def analyse_statements(request: AnalysisRequest):
             detail="The AI returned an invalid response."
         )
 
-    except Exception:
+    except Exception as error:
+        print(f"Gemini API error: {type(error).__name__}: {error}")
+
         raise HTTPException(
             status_code=502,
             detail="Unable to analyse the statements right now."
