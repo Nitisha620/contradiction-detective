@@ -1,11 +1,18 @@
 from typing import Literal
-from pydantic import BaseModel, Field
-
+from pydantic import BaseModel, Field, field_validator
 
 class AnalysisRequest(BaseModel):
     statement_a: str = Field(min_length=1, max_length=2000)
     statement_b: str = Field(min_length=1, max_length=2000)
 
+    @field_validator("statemenrt_a", "statement_b")
+    @classmethod
+    def validate_statements(cls, value: str) -> str:
+        value = value.strip()
+
+        if not value:
+            raise ValueError("Statement cannot be empty or whitespace.")
+        return value
 
 class AnalysisResponse(BaseModel):
     classification: Literal[
