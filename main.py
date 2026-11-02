@@ -99,7 +99,7 @@ def analyse_statements(request: AnalysisRequest):
 
     except ValidationError:
         logger.error("Gemini returned an invalid response.")
-        
+
         raise HTTPException(
             status_code=502,
             detail="The AI returned an invalid response."
@@ -110,7 +110,7 @@ def analyse_statements(request: AnalysisRequest):
         elapsed_time = time.perf_counter() - start_time
 
         logger.error(
-            "Gemini API request failed: %s", 
+            "Gemini API request failed after %.2f seconds. Error: %s",
             elapsed_time,
             type(error).__name__
         )
