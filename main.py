@@ -14,6 +14,10 @@ from config import settings
 
 from logger_config import logger
 
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+
 
 api_key = settings.GEMINI_API_KEY
 
@@ -26,6 +30,15 @@ app = FastAPI(
     title="Contradiction Detective",
     description="An API that analyses two statements for contradictions.",
     version="1.0.0"
+)
+
+limiter = Limiter(key_func=get_remote_address)
+
+app.state.limiter = limiter
+
+app.add_exception_handler(
+    RateLimitExceeded,
+    _rate_limit_exceeded_handler
 )
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -43,6 +56,7 @@ def home():
 
 
 @app.post("/analyse", response_model=AnalysisResponse)
+@limiter.limt("5/minute")
 def analyse_statements(request: AnalysisRequest):
 
     start_time = time.perf_counter()
